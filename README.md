@@ -8,6 +8,30 @@ It applies simple obfuscation techniques to make your code less readable and det
 - Limited AST Transformations: The obfuscator performs basic Abstract Syntax Tree (AST) transformations to modify the code structure and confuse potential attackers.
 - Single Obfuscation Layer: You can choose to apply a single layer of obfuscation to the code to make it slightly harder to understand.
 
+# Example
+Before:
+```python
+def calculate_sum(a, b):
+    return a + b
+
+num1 = 5
+num2 = 3
+result = calculate_sum(num1, num2)
+
+print("The sum of", num1, "and", num2, "is:", result)
+```
+After:
+```python
+# Obfuscated With Stealthify V2 By Sirmilann
+def calculate_sum(GPsNnNxMeahbjiH, WgvHnWsqZTEHvfs):
+    return GPsNnNxMeahbjiH + WgvHnWsqZTEHvfs
+gDJzfxEjofxXCZv = 5
+JCPvxuaLAlRTHaz = 3
+InjxWyhTqHxOReG = calculate_sum(gDJzfxEjofxXCZv, JCPvxuaLAlRTHaz)
+print('The sum of', gDJzfxEjofxXCZv, 'and', JCPvxuaLAlRTHaz, 'is:', InjxWyhTqHxOReG)
+```
+
+
 # Usage:
 1. Run the Stealthify V2 script.
 2. Enter the path to the Python file you want to obfuscate.

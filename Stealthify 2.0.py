@@ -1,4 +1,5 @@
 import ast, random, string, base64, os
+import re
 from colorama import Fore as f
 
 os.system("cls")
@@ -66,6 +67,16 @@ def obfuscate_code(code, iterations):
 def base64_encode(data):
     return base64.b64encode(data.encode()).decode()
 
+def Add_Dead_code(code):
+    obfuscated_lines = code.split('\n')
+    for i in range(2, len(obfuscated_lines), 3):
+        junk_code = ''.join(random.choices(string.ascii_letters, k=35))
+        junk_line = f"""
+        # {junk_code}
+        """
+        obfuscated_lines.insert(i, junk_line)
+    return '\n'.join(obfuscated_lines)
+
 print
 (f.RED + """
 ███████╗████████╗███████╗ █████╗ ██╗  ████████╗██╗  ██╗██╗███████╗██╗   ██╗    ██╗   ██╗██████╗ 
@@ -81,10 +92,13 @@ iterations = int(input(f.RED + "Number of Obfuscation Layers: "))
 with open(file_path, 'r', encoding='utf-8') as file:
     code = file.read()
 obfuscated_code = obfuscate_code(code, iterations)
+add_junk = input("Add Dead Code? [yes/no]: ")
 obfuscate_again = input(f.RED + "Use base64? [yes/no]: ")
 if obfuscate_again.lower() == 'yes':
     obfuscated_code = base64_encode(obfuscated_code)
     obfuscated_code = f"exec(__import__('base64').b64decode('{obfuscated_code}').decode())"
+if add_junk.lower() == 'yes':
+    obfuscated_code = Add_Dead_code(obfuscated_code)
 file_name = file_path.rsplit('.', 1)[0]
 extension = file_path.rsplit('.', 1)[1]
 obfuscated_file_path = file_name + "_obf." + extension

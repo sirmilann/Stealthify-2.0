@@ -1,8 +1,4 @@
-import ast, random, string, base64, os
-import re
-from colorama import Fore as f
-
-os.system("cls")
+import ast, random, string, base64, os;from colorama import Fore as f;os.system("cls")
 
 class Obfuscator(ast.NodeTransformer):
     def __init__(self):
@@ -69,13 +65,11 @@ def base64_encode(data):
 
 def Add_Dead_code(code):
     obfuscated_lines = code.split('\n')
-    for i in range(2, len(obfuscated_lines), 3):
-        junk_code = ''.join(random.choices(string.ascii_letters, k=35))
-        junk_line = f"""
-        # {junk_code}
-        """
-        obfuscated_lines.insert(i, junk_line)
-    return '\n'.join(obfuscated_lines)
+    new_lines = []
+    for line in obfuscated_lines:
+        new_lines.append(line)
+        new_lines.append(f"# {''.join(random.choices(string.ascii_letters, k=35))}")
+    return '\n'.join(new_lines)
 
 print
 (f.RED + """

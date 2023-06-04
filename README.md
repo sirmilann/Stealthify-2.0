@@ -5,8 +5,10 @@ It applies simple obfuscation techniques to make your code less readable and det
 
 # Features:
 - Basic Name Obfuscation: Stealthify V2 renames variables, functions, and parameters with randomly generated names to make the code less intuitive.
+- The obfuscated code is enhanced with randomly generated lines of junk code, which are interspersed throughout the code to make it more difficult to analyze and understand.
 - Limited AST Transformations: The obfuscator performs basic Abstract Syntax Tree (AST) transformations to modify the code structure and confuse potential attackers.
-- Single Obfuscation Layer: You can choose to apply a single layer of obfuscation to the code to make it slightly harder to understand.
+- Base64 Encoding layer: Adds another layer of Base64 Encoding over the obfuscated code to make it slightly harder to understand.
+- Multiple Obfuscation Layers: You can choose to apply multiple layers of obfuscation to the code to make it slightly harder to understand.
 
 # Example
 Before:
@@ -29,6 +31,22 @@ gDJzfxEjofxXCZv = 5
 JCPvxuaLAlRTHaz = 3
 InjxWyhTqHxOReG = calculate_sum(gDJzfxEjofxXCZv, JCPvxuaLAlRTHaz)
 print('The sum of', gDJzfxEjofxXCZv, 'and', JCPvxuaLAlRTHaz, 'is:', InjxWyhTqHxOReG)
+```
+After Including Junk Code:
+```python
+# Obfuscated With Stealthify V2 By Sirmilann
+def calculate_sum(BHCMiwviUfGTBmw, QYoagIeuwoJdViz):
+# pShOoIrPeJZBtcDYdfOoZvBreiUlFrCCuqg
+    return BHCMiwviUfGTBmw + QYoagIeuwoJdViz
+# dzPRTnMtKFOrgJVNKzAhbCbqLJlcyJKFizQ
+hUpuFTIFFfWQGZz = 5
+# bKZnKSFRwLWghMsudYPiSXKVYXrEmVImkyI
+kMDDRzHjOVjliqb = 3
+# WyrBhkEUZAPXKVfHdFdHTisVhKGDbWcsPIN
+hIyRLHFLUXuTvJn = calculate_sum(hUpuFTIFFfWQGZz, kMDDRzHjOVjliqb)
+# OsSgJhWkVnUjXLvHgyaYibXRSkYXEJjjQOg
+print('The sum of', hUpuFTIFFfWQGZz, 'and', kMDDRzHjOVjliqb, 'is:', hIyRLHFLUXuTvJn)
+# reeYBgqjdHHNQooEyKIlJCqtdiBlCHUHzvd
 ```
 
 

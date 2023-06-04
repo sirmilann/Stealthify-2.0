@@ -53,11 +53,13 @@ print('The sum of', hUpuFTIFFfWQGZz, 'and', kMDDRzHjOVjliqb, 'is:', hIyRLHFLUXuT
 # Usage:
 1. Run the Stealthify V2 script.
 2. Enter the path to the Python file you want to obfuscate.
-3. Specify the number of obfuscation layers to apply.
-4. The obfuscated code will be saved to a new file with "_obf" appended to the original filename.
+4. Specify the number of obfuscation layers to apply.
+5. Choose if you want to add junk code.
+6. Choose if you want to use a base64 encoding layer.
+7. The obfuscated code will be saved to a new file with "_obf" appended to the original filename.
 
 Please note that while obfuscation can provide a basic level of code protection, it does not guarantee absolute security.
-attackers may still attempt to reverse engineer the code given enough time and expertise.
+attackers may still attempt to reverse engineer the code given time and expertise.
 
 # Requirements
 Python 3.x

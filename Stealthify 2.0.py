@@ -1,4 +1,7 @@
-import ast, random, string, base64, os;from colorama import Fore as f;os.system("cls")
+import ast, random, string, base64, os
+from colorama import Fore as f
+
+os.system("cls")
 
 class Obfuscator(ast.NodeTransformer):
     def __init__(self):
@@ -83,19 +86,26 @@ print
 """)
 file_path = input(f.RED + "File: ")
 iterations = int(input(f.RED + "Number of Obfuscation Layers: "))
+
 with open(file_path, 'r', encoding='utf-8') as file:
     code = file.read()
+    
 obfuscated_code = obfuscate_code(code, iterations)
+
 add_junk = input("Add Dead Code? [yes/no]: ")
+
 obfuscate_again = input(f.RED + "Use base64? [yes/no]: ")
 if obfuscate_again.lower() == 'yes':
     obfuscated_code = base64_encode(obfuscated_code)
     obfuscated_code = f"exec(__import__('base64').b64decode('{obfuscated_code}').decode())"
+    
 if add_junk.lower() == 'yes':
     obfuscated_code = Add_Dead_code(obfuscated_code)
+    
 file_name = file_path.rsplit('.', 1)[0]
 extension = file_path.rsplit('.', 1)[1]
 obfuscated_file_path = file_name + "_obf." + extension
+
 with open(obfuscated_file_path, 'w') as file:
     file.write("# Obfuscated With Stealthify V2 By Sirmilann\n" + obfuscated_code)
 print(f.RED + "Code Saved To:", obfuscated_file_path)

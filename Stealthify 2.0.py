@@ -1,4 +1,4 @@
-import ast, random, base64, os, marshal, zlib
+import ast, random, base64, os, marshal, lzma
 from colorama import Fore as f
 
 os.system("cls")
@@ -54,7 +54,7 @@ def obfuscate_code(code, iterations):
 
 def encode_and_compress(data):
     marshaled_data = marshal.dumps(data.encode())
-    compressed_data = zlib.compress(marshaled_data)
+    compressed_data = lzma.compress(marshaled_data)
     encoded_data = base64.b85encode(compressed_data).decode()
     return base64.b64encode(encoded_data.encode()).decode()
 
@@ -75,7 +75,7 @@ print
 ╚════██║   ██║   ██╔══╝  ██╔══██║██║     ██║   ██╔══██║██║██╔══╝    ╚██╔╝      ╚██╗ ██╔╝██╔═══╝ 
 ███████║   ██║   ███████╗██║  ██║███████╗██║   ██║  ██║██║██║        ██║        ╚████╔╝ ███████╗
 ╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝╚═╝╚═╝        ╚═╝         ╚═══╝  ╚══════╝
-- By Sirmilann [SR] -
+- By Sirmilann [SR] - https://discord.gg/Eww5ucwY4a
 """)
 file_path = input(f.RED + "File: ")
 iterations = int(input(f.RED + "Number of Obfuscation Layers: "))
@@ -88,7 +88,7 @@ if add_junk.lower() == 'yes':
     obfuscated_code = Add_Dead_code(obfuscated_code)
 if obfuscate_again.lower() == 'yes':
     obfuscated_code = encode_and_compress(obfuscated_code)
-    obfuscated_code = f"import zlib, marshal, base64;exec(marshal.loads(zlib.decompress(base64.b85decode(base64.b64decode('{obfuscated_code}'.encode()).decode()))))"
+    obfuscated_code = f"import lzma, marshal, base64;exec(marshal.loads(lzma.decompress(base64.b85decode(base64.b64decode('{obfuscated_code}'.encode()).decode()))))"
 file_name = file_path.rsplit('.', 1)[0]
 extension = file_path.rsplit('.', 1)[1]
 obfuscated_file_path = file_name + "_obf." + extension

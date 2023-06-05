@@ -1,4 +1,4 @@
-import ast, random, string, base64, os
+import ast, random, base64, os, marshal, zlib
 from colorama import Fore as f
 
 os.system("cls")
@@ -10,7 +10,7 @@ class Obfuscator(ast.NodeTransformer):
 
     def obfuscate_name(self, name):
         if name not in self.mapping:
-            new_name = ''.join(random.choices(string.ascii_letters, k=15))
+            new_name = ''.join(chr(random.randint(945, 1007)) for _ in range(20))
             self.mapping[name] = new_name
         return self.mapping[name]
 
@@ -19,17 +19,6 @@ class Obfuscator(ast.NodeTransformer):
             obfuscated_name = self.obfuscate_name(arg.arg)
             self.function_parameters[arg.arg] = obfuscated_name
             arg.arg = obfuscated_name
-        for stmt in node.body:
-            if isinstance(stmt, ast.Assign):
-                for target in ast.walk(stmt.targets[0]):
-                    if isinstance(target, ast.Name):
-                        target.id = self.obfuscate_name(target.id)
-            elif isinstance(stmt, ast.If):
-                for substmt in stmt.body:
-                    if isinstance(substmt, ast.Assign):
-                        for target in ast.walk(substmt.targets[0]):
-                            if isinstance(target, ast.Name):
-                                target.id = self.obfuscate_name(target.id)
         return self.generic_visit(node)
 
     def visit_Name(self, node):
@@ -63,15 +52,19 @@ def obfuscate_code(code, iterations):
     obfuscated_code = ast.unparse(tree)
     return obfuscated_code
 
-def base64_encode(data):
-    return base64.b64encode(data.encode()).decode()
+def encode_and_compress(data):
+    marshaled_data = marshal.dumps(data.encode())
+    compressed_data = zlib.compress(marshaled_data)
+    encoded_data = base64.b85encode(compressed_data).decode()
+    return base64.b64encode(encoded_data.encode()).decode()
 
 def Add_Dead_code(code):
     obfuscated_lines = code.split('\n')
     new_lines = []
+    rletters = ''.join(chr(random.randint(945, 1007)) for _ in range(20))
     for line in obfuscated_lines:
         new_lines.append(line)
-        new_lines.append(f"# {''.join(random.choices(string.ascii_letters, k=35))}")
+        new_lines.append(f"# {rletters}")
     return '\n'.join(new_lines)
 
 print
@@ -86,26 +79,20 @@ print
 """)
 file_path = input(f.RED + "File: ")
 iterations = int(input(f.RED + "Number of Obfuscation Layers: "))
-
 with open(file_path, 'r', encoding='utf-8') as file:
-    code = file.read()
-    
+    code = file.read()  
 obfuscated_code = obfuscate_code(code, iterations)
-
 add_junk = input("Add Dead Code? [yes/no]: ")
-
-obfuscate_again = input(f.RED + "Use base64? [yes/no]: ")
-if obfuscate_again.lower() == 'yes':
-    obfuscated_code = base64_encode(obfuscated_code)
-    obfuscated_code = f"exec(__import__('base64').b64decode('{obfuscated_code}').decode())"
-    
+obfuscate_again = input(f.RED + "Use Encoding and Compression? [yes/no]: ")
 if add_junk.lower() == 'yes':
     obfuscated_code = Add_Dead_code(obfuscated_code)
-    
+if obfuscate_again.lower() == 'yes':
+    obfuscated_code = encode_and_compress(obfuscated_code)
+    obfuscated_code = f"import zlib, marshal, base64;exec(marshal.loads(zlib.decompress(base64.b85decode(base64.b64decode('{obfuscated_code}'.encode()).decode()))))"
 file_name = file_path.rsplit('.', 1)[0]
 extension = file_path.rsplit('.', 1)[1]
 obfuscated_file_path = file_name + "_obf." + extension
-
-with open(obfuscated_file_path, 'w') as file:
+with open(obfuscated_file_path, 'w', encoding='utf-8') as file:
     file.write("# Obfuscated With Stealthify V2 By Sirmilann\n" + obfuscated_code)
 print(f.RED + "Code Saved To:", obfuscated_file_path)
+input()

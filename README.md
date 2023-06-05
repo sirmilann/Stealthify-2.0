@@ -13,40 +13,54 @@ It applies simple obfuscation techniques to make your code less readable and det
 # Example
 Before:
 ```python
-def calculate_sum(a, b):
-    return a + b
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
 
-num1 = 5
-num2 = 3
-result = calculate_sum(num1, num2)
-
-print("The sum of", num1, "and", num2, "is:", result)
+    def calculate_area(self):
+        return 3.14 * self.radius ** 2
+area = Circle.calculate_area()
+print("Area:", area)
 ```
 After:
 ```python
 # Obfuscated With Stealthify V2 By Sirmilann
-def calculate_sum(GPsNnNxMeahbjiH, WgvHnWsqZTEHvfs):
-    return GPsNnNxMeahbjiH + WgvHnWsqZTEHvfs
-gDJzfxEjofxXCZv = 5
-JCPvxuaLAlRTHaz = 3
-InjxWyhTqHxOReG = calculate_sum(gDJzfxEjofxXCZv, JCPvxuaLAlRTHaz)
-print('The sum of', gDJzfxEjofxXCZv, 'and', JCPvxuaLAlRTHaz, 'is:', InjxWyhTqHxOReG)
+class Circle:
+
+    def __init__(ϋωφϫξϕϤδϨγϡϊλϐκμϩϮνφ, ϚρηϣρξϐσττκϣϕϘοφϯηχρ):
+        ϋωφϫξϕϤδϨγϡϊλϐκμϩϮνφ.radius = ϚρηϣρξϐσττκϣϕϘοφϯηχρ
+
+    def calculate_area(ϋωφϫξϕϤδϨγϡϊλϐκμϩϮνφ):
+        return 3.14 * ϋωφϫξϕϤδϨγϡϊλϐκμϩϮνφ.radius ** 2
+ϧυϠϪώζξεϓσϡφκλςϤξωϧθ = Circle.calculate_area()
+print('Area:', ϧυϠϪώζξεϓσϡφκλςϤξωϧθ)
 ```
 After Including Junk Code:
 ```python
 # Obfuscated With Stealthify V2 By Sirmilann
-def calculate_sum(BHCMiwviUfGTBmw, QYoagIeuwoJdViz):
-# pShOoIrPeJZBtcDYdfOoZvBreiUlFrCCuqg
-    return BHCMiwviUfGTBmw + QYoagIeuwoJdViz
-# dzPRTnMtKFOrgJVNKzAhbCbqLJlcyJKFizQ
-hUpuFTIFFfWQGZz = 5
-# bKZnKSFRwLWghMsudYPiSXKVYXrEmVImkyI
-kMDDRzHjOVjliqb = 3
-# WyrBhkEUZAPXKVfHdFdHTisVhKGDbWcsPIN
-hIyRLHFLUXuTvJn = calculate_sum(hUpuFTIFFfWQGZz, kMDDRzHjOVjliqb)
-# OsSgJhWkVnUjXLvHgyaYibXRSkYXEJjjQOg
-print('The sum of', hUpuFTIFFfWQGZz, 'and', kMDDRzHjOVjliqb, 'is:', hIyRLHFLUXuTvJn)
-# reeYBgqjdHHNQooEyKIlJCqtdiBlCHUHzvd
+class Circle:
+# εκϐνξϔϗεκϚαϑϪϙϠϞϣχδε
+
+# εκϐνξϔϗεκϚαϑϪϙϠϞϣχδε
+    def __init__(ζθϡγϞψϓϚϠϏωϢϏμϓπϖϟχϡ, ϣϖϓϗϬϐφϚλφϔϣγπλϟοϜϭϊ):
+# εκϐνξϔϗεκϚαϑϪϙϠϞϣχδε
+        ζθϡγϞψϓϚϠϏωϢϏμϓπϖϟχϡ.radius = ϣϖϓϗϬϐφϚλφϔϣγπλϟοϜϭϊ
+# εκϐνξϔϗεκϚαϑϪϙϠϞϣχδε
+
+# εκϐνξϔϗεκϚαϑϪϙϠϞϣχδε
+    def calculate_area(ζθϡγϞψϓϚϠϏωϢϏμϓπϖϟχϡ):
+# εκϐνξϔϗεκϚαϑϪϙϠϞϣχδε
+        return 3.14 * ζθϡγϞψϓϚϠϏωϢϏμϓπϖϟχϡ.radius ** 2
+# εκϐνξϔϗεκϚαϑϪϙϠϞϣχδε
+ϝκϗκεμϓηϐϦθϓξϘϙϬοσϗμ = Circle.calculate_area()
+# εκϐνξϔϗεκϚαϑϪϙϠϞϣχδε
+print('Area:', ϝκϗκεμϓηϐϦθϓξϘϙϬοσϗμ)
+# εκϐνξϔϗεκϚαϑϪϙϠϞϣχδε
+```
+After Encoding And Compression:
+```python
+# Obfuscated With Stealthify V2 By Sirmilann
+import zlib, marshal, base64;exec(marshal.loads(zlib.decompress(base64.b85decode(base64.b64decode('YyR+RlRPLXNXLTVHe0Q/dU5kJnFIazUhTHItQkZaaGxDfHJBck9MV2xEakNoNnshYSk7enlmUTFWeWNhVnpwTVN8NnR4PGF6SWE+dlZzRyV5dG5Nazh7VFhaRUwxOWZxPl9YLUxnUG9lUmIzPXA7RjZ5KSN0cGktIy04dn5qTzM7eGMhVlBxSlFkY2YrUG8hK0t5US1nZz5qZ0FVTENzX083NWVMR2RXTkFPP1pjPT08eiRjUW5TcXUoKEFCRUptVSU0IXRWR0hlWmx1VW0oRzJqO1QqUnB1ITh8fDxQRUZnPV9rdDA7VGpjJFN3ZF4yPWxPM2RlSEhteHEqQ29FcWc4MWB8N01mWFg9WSt0YWhGIWZ1e088ZFh4VDs7JE5Zbz8kdVdQNSMrOF5tJEFEamo2Jk1RNmRCUUxKQT1+KT14OSVAOThhOFRNQ1hDYTFaQ3dnbXdJLURueDYkfGx2US0hYA=='.encode()).decode()))))
 ```
 
 

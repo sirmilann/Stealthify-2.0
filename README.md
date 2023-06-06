@@ -9,6 +9,7 @@ It applies simple obfuscation techniques to make your code less readable and det
 - Limited AST Transformations: The obfuscator performs basic Abstract Syntax Tree (AST) transformations to modify the code structure and confuse potential attackers.
 - Another Encoding layer: Adds another layer of Base64, base85, marshal and lzma Encoding and compression over the obfuscated code to make it slightly harder to understand.
 - Multiple Obfuscation Layers: You can choose to apply multiple layers of obfuscation to the code to make it slightly harder to understand.
+- Basic Anti-VM code to bypass Virtual Machine Environment
 
 # Example
 Before:

@@ -76,6 +76,14 @@ import lzma, marshal, base64;exec(marshal.loads(lzma.decompress(base64.b85decode
 Please note that while obfuscation can provide a basic level of code protection, it does not guarantee absolute security.
 attackers may still attempt to reverse engineer the code given time and expertise.
 
+# Changelog:
+
+# 2.1.2
+
+• Added Anti-VM Code to bypass Virtual Environments.
+• Added Try Exept blocks to the code.
+• Using LZMA Instead of ZLIB.
+
 # Requirements
 Python 3.x
 

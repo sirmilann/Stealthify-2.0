@@ -71,18 +71,11 @@ import lzma, marshal, base64;exec(marshal.loads(lzma.decompress(base64.b85decode
 4. Specify the number of obfuscation layers to apply.
 5. Choose if you want to add junk code.
 6. Choose if you want to use an extra encoding and compression layer.
-7. The obfuscated code will be saved to a new file with "_obf" appended to the original filename.
+7. Choose if you want to add anti vm code.
+8. The obfuscated code will be saved to a new file with "_obf" appended to the original filename.
 
 Please note that while obfuscation can provide a basic level of code protection, it does not guarantee absolute security.
 attackers may still attempt to reverse engineer the code given time and expertise.
-
-# Changelog:
-
-# 2.1.2
-
-• Added Anti-VM Code to bypass Virtual Environments.
-• Added Try Exept blocks to the code.
-• Using LZMA Instead of ZLIB.
 
 # Requirements
 Python 3.x

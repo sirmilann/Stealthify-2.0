@@ -55,23 +55,32 @@ def obfuscate_code(code, iterations):
     obfuscated_code = ast.unparse(tree)
     return obfuscated_code
 
-def encode_and_compress(data):
-    marshaled_data = marshal.dumps(data.encode())
-    compressed_data = lzma.compress(marshaled_data)
-    encoded_data = base64.b85encode(compressed_data).decode()
-    return base64.b64encode(encoded_data.encode()).decode()
-
 def Add_Dead_code(code):
     obfuscated_lines = code.split('\n')
     new_lines = []
-    rletters = ''.join(chr(random.randint(945, 1007)) for _ in range(20))
     for line in obfuscated_lines:
         new_lines.append(line)
-        new_lines.append(f"# {rletters}")
+        dead_code_length = random.randint(5, 10)
+        dead_code = '__STEALTHIFY_OBFUSCATED____STEALTHIFY_OBFUSCATED____STEALTHIFY_OBFUSCATED__' * dead_code_length
+        new_lines.append(f"#{dead_code}")
     return '\n'.join(new_lines)
 
-print
-(f.RED + """
+def Stealthcrypt(content):
+    CMARK = '__STEALTHIFY__' * 15
+    COFFSET = 10
+    marshaled_data = marshal.dumps(content.encode())
+    compressed_data = lzma.compress(marshaled_data)
+    encoded_data = base64.b85encode(compressed_data).decode()
+    b64_encoded_data = base64.b64encode(encoded_data.encode()).decode()
+    code = f'{CMARK} = ""\n'
+    for i in range(0, len(b64_encoded_data), COFFSET):
+        chunk = b64_encoded_data[i:i+COFFSET]
+        code += f'{CMARK} += "{chunk}"\n'
+    code += f"import lzma,marshal,base64;exec(marshal.loads(lzma.decompress(base64.b85decode(base64.b64decode({CMARK}.encode()).decode()))))"
+    return code
+
+try:
+    print(f.RED + """
 ███████╗████████╗███████╗ █████╗ ██╗  ████████╗██╗  ██╗██╗███████╗██╗   ██╗    ██╗   ██╗██████╗ 
 ██╔════╝╚══██╔══╝██╔════╝██╔══██╗██║  ╚══██╔══╝██║  ██║██║██╔════╝╚██╗ ██╔╝    ██║   ██║╚════██╗
 ███████╗   ██║   █████╗  ███████║██║     ██║   ███████║██║█████╗   ╚████╔╝     ██║   ██║ █████╔╝
@@ -80,10 +89,12 @@ print
 ╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝╚═╝╚═╝        ╚═╝         ╚═══╝  ╚══════╝
 - By Sirmilann [SR] - https://discord.gg/Eww5ucwY4a
 """)
-try:
     file_path = input(f.RED + "File: ")
     iterations = int(input(f.RED + "Number of Obfuscation Layers: "))
     antivm = input(f.RED + "Enable Anti VM? [yes/no]: ")  
+    add_junk = input("Add Dead Code? [yes/no]: ")
+    use_Stealthcrypt = input(f.RED + "Use Encoding And Encryption? [yes/no]: ")
+
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             code = file.read()
@@ -95,6 +106,7 @@ try:
     
     if antivm.lower() == 'yes':
         obfuscated_code += """
+import sys
 def get_base_prefix_compat():
     return getattr(sys, "base_prefix", None) or getattr(sys, "real_prefix", None) or sys.prefix
 def in_virtualenv(): 
@@ -103,16 +115,12 @@ if in_virtualenv() == True:
     sys.exit()
 """
     
-    add_junk = input("Add Dead Code? [yes/no]: ")
-    obfuscate_again = input(f.RED + "Use Encoding and Compression? [yes/no]: ")
-    
     if add_junk.lower() == 'yes':
         obfuscated_code = Add_Dead_code(obfuscated_code)
     
-    if obfuscate_again.lower() == 'yes':
-        obfuscated_code = encode_and_compress(obfuscated_code)
-        obfuscated_code = f"import lzma, marshal, base64;exec(marshal.loads(lzma.decompress(base64.b85decode(base64.b64decode('{obfuscated_code}'.encode()).decode()))))"
-    
+    if use_Stealthcrypt.lower() == 'yes':
+        obfuscated_code = Stealthcrypt(obfuscated_code)
+  
     file_name = file_path.rsplit('.', 1)[0]
     extension = file_path.rsplit('.', 1)[1]
     obfuscated_file_path = file_name + "_obf." + extension

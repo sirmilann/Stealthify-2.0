@@ -60,8 +60,8 @@ def Add_Dead_code(code):
     new_lines = []
     for line in obfuscated_lines:
         new_lines.append(line)
-        dead_code_length = random.randint(5, 10)
-        dead_code = '__STEALTHIFY_OBFUSCATED____STEALTHIFY_OBFUSCATED____STEALTHIFY_OBFUSCATED__' * dead_code_length
+        dead_code_length = random.randint(2, 5)
+        dead_code = '__STEALTHIFY_OBFUSCATED__' * dead_code_length
         new_lines.append(f"#{dead_code}")
     return '\n'.join(new_lines)
 
@@ -75,7 +75,8 @@ def Stealthcrypt(content):
     code = f'{CMARK} = ""\n'
     for i in range(0, len(b64_encoded_data), COFFSET):
         chunk = b64_encoded_data[i:i+COFFSET]
-        code += f'{CMARK} += "{chunk}"\n'
+        hex_chunk = ''.join([f'\\x{ord(c):02x}' for c in chunk])
+        code += f'{CMARK} += "{hex_chunk}"\n'
     code += f"import lzma,marshal,base64;exec(marshal.loads(lzma.decompress(base64.b85decode(base64.b64decode({CMARK}.encode()).decode()))))"
     return code
 

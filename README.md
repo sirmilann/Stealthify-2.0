@@ -122,7 +122,8 @@ exec(__import__('marshal').loads(__import__('zlib').decompress(__import__('base6
 5. Choose if you want to add junk code.
 6. Choose if you want to use an extra encoding and compression layer.
 7. Choose if you want to add anti vm code.
-8. The obfuscated code will be saved to a new file with "_obf" appended to the original filename.
+8. Choose if you want to use a startup method.
+9. The obfuscated code will be saved to a new file with "_obf" appended to the original filename.
 
 Please note that while obfuscation can provide a basic level of code protection, it does not guarantee absolute security.
 attackers may still attempt to reverse engineer the code given time and expertise.

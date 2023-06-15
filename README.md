@@ -4,7 +4,7 @@ Stealthify V2 is a lightweight code obfuscator for Python, designed to provide b
 It applies simple obfuscation techniques to make your code less readable and deter unauthorized access.
 
 # Features:
-- Basic Name Obfuscation: Stealthify V2 renames variables, functions, class and def names with randomly generated names to make the code less intuitive.
+- Basic Name Obfuscation: Stealthify V2 renames variables, functions and class names with randomly generated names to make the code less intuitive.
 - The obfuscated code is enhanced with randomly generated lines of junk code, which are interspersed throughout the code to make it more difficult to analyze and understand.
 - Limited AST Transformations: The obfuscator performs basic Abstract Syntax Tree (AST) transformations to modify the code structure and confuse potential attackers.
 - Another Encoding layer: Adds another layer of Base64, base85, marshal and lzma Encoding and compression over the obfuscated code to make it slightly harder to understand. It uses some code from Codeuk on Github. Go check him out!

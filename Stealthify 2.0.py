@@ -10,34 +10,23 @@ class Obfuscator(ast.NodeTransformer):
 
     def obfuscate_name(self, name):
         if name not in self.mapping:
-            new_name = ''.join(chr(random.randint(945, 1007)) for _ in range(20))
-            self.mapping[name] = new_name
+            self.mapping[name] = "".join(random.choice(["I", "l"]) for _ in range(35))
         return self.mapping[name]
 
-    def visit_ClassDef(self, node):
-        obfuscated_name = self.obfuscate_name(node.name)
-        self.mapping[node.name] = obfuscated_name
-        node.name = obfuscated_name
-        return self.generic_visit(node)
-
     def visit_FunctionDef(self, node):
-        obfuscated_name = self.obfuscate_name(node.name)
-        self.mapping[node.name] = obfuscated_name
-        node.name = obfuscated_name
-
         for arg in node.args.args:
-            obfuscated_arg = self.obfuscate_name(arg.arg)
-            self.function_parameters[arg.arg] = obfuscated_arg
-            arg.arg = obfuscated_arg
-
+            obfuscated_name = self.obfuscate_name(arg.arg)
+            self.function_parameters[arg.arg] = obfuscated_name
+            arg.arg = obfuscated_name
         return self.generic_visit(node)
+
+    visit_AsyncFunctionDef = visit_FunctionDef
 
     def visit_Name(self, node):
         if isinstance(node.ctx, ast.Store):
             node.id = self.obfuscate_name(node.id)
-        elif isinstance(node.ctx, ast.Load):
-            if node.id in self.mapping:
-                node.id = self.mapping[node.id]
+        elif isinstance(node.ctx, ast.Load) and node.id in self.mapping:
+            node.id = self.mapping[node.id]
         return node
 
     def visit_Call(self, node):
@@ -47,15 +36,20 @@ class Obfuscator(ast.NodeTransformer):
         if isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name) and node.func.value.id in self.mapping:
             node.func.value.id = self.mapping[node.func.value.id]
 
-        for i, arg in enumerate(node.args):
-            if isinstance(arg, ast.Name) and arg.id in self.mapping:
-                node.args[i].id = self.mapping[arg.id]
-                
+        node.args = [self.visit(arg) if isinstance(arg, ast.Name) and arg.id in self.mapping else arg for arg in node.args]
+
         return self.generic_visit(node)
 
     def visit_Return(self, node):
         if isinstance(node.value, ast.Name) and node.value.id in self.mapping:
             node.value.id = self.mapping[node.value.id]
+        return self.generic_visit(node)
+
+    def visit_ExceptHandler(self, node):
+        if node.name:
+            obfuscated_name = self.obfuscate_name(node.name)
+            self.mapping[node.name] = obfuscated_name
+            node.name = obfuscated_name
         return self.generic_visit(node)
 
 def obfuscate_code(code, iterations):

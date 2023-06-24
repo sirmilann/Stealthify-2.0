@@ -95,13 +95,15 @@ def Add_Dead_code(code):
 def Stealthcrypt(content):
     CMARK = '__STEALTHIFY__V2__' * 15
     COFFSET = 10
-    zlib_data = zlib.compress(content)
-    b64_encoded_data = base64.b64encode(zlib_data).decode()
+    marshaled_data = marshal.dumps(content.encode())
+    compressed_data = zlib.compress(marshaled_data)
+    encoded_data = base64.b85encode(compressed_data).decode()
+    b64_encoded_data = base64.b64encode(encoded_data.encode()).decode()
     code = f'{CMARK} = ""\n'
     for i in range(0, len(b64_encoded_data), COFFSET):
         chunk = b64_encoded_data[i:i+COFFSET]
         code += f'{CMARK} += "{chunk}"\n'
-    code += f"exec(__import__('\\x7A\\x6C\\x69\\x62').decompress(__import__('\\x62\\x61\\x73\\x65\\x36\\x34').b64decode({CMARK}.encode()).decode()))))"
+    code += f"exec(__import__('\\x6D\\x61\\x72\\x73\\x68\\x61\\x6C').loads(__import__('\\x7A\\x6C\\x69\\x62').decompress(__import__('\\x62\\x61\\x73\\x65\\x36\\x34').b85decode(__import__('\\x62\\x61\\x73\\x65\\x36\\x34').b64decode({CMARK}.encode()).decode()))))"
     return code
 
 try:
@@ -120,7 +122,7 @@ try:
     add_junk = input("Add Dead Code? [yes/no]: ")
     startup = input("Use Startup? [yes/no]: ")
     anti_debug = input("Use Anti-Debug? [yes/no]: ")
-    use_Stealthcrypt = input(f.RED + "Use Encoding And Encryption? [yes/no]: ")
+    enc_and_comp = input(f.RED + "Use Encoding And Encryption? [yes/no]: ")
 
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
@@ -189,7 +191,7 @@ shutil.copy(currentfile,folder_path)
     if add_junk.lower() == 'yes':
         obfuscated_code = Add_Dead_code(obfuscated_code)
     
-    if use_Stealthcrypt.lower() == 'yes':
+    if enc_and_comp.lower() == 'yes':
         obfuscated_code = Stealthcrypt(obfuscated_code)
   
     file_name = file_path.rsplit('.', 1)[0]

@@ -116,6 +116,7 @@ try:
 ╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝╚═╝╚═╝        ╚═╝         ╚═══╝  ╚══════╝
 - By Sirmilann [SR] - https://discord.gg/Eww5ucwY4a
 """)
+    
     file_path = input(f.RED + "File: ")
     iterations = int(input(f.RED + "Number of Obfuscation Layers: "))
     antivm = input(f.RED + "Enable Anti VM? [yes/no]: ")  

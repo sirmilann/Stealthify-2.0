@@ -5,7 +5,7 @@ Stealthify V2 is a Python code obfuscation tool designed to transform readable P
 
 ### How to Use
 
-To use Stealthify V2, follow these steps:
+To use Stealthify v2, follow these steps:
 
 1. Clone or download the Stealthify V2 repository from GitHub.
 2. Ensure you have the necessary dependencies installed. The code relies on the `ast` and `colorama` libraries, which can be installed via pip:

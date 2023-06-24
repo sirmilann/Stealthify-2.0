@@ -1,4 +1,5 @@
 ## Stealthify V2
+![image](https://user-images.githubusercontent.com/94076644/208468748-e4e44944-f978-4806-980d-601202be9afa.png)
 
 Stealthify V2 is a Python code obfuscation tool designed to transform readable Python code into a more complex and difficult-to-understand version. It applies various obfuscation techniques such as renaming variables, functions, and classes, adding dead code, and optionally encoding and encrypting the obfuscated code. The tool aims to make the code more challenging to reverse-engineer or analyze while preserving its functionality.
 

@@ -33,7 +33,7 @@ It includes methods for obfuscating names, handling imports, functions, classes,
 
 ### Examples
 
-Here are some examples of how to use Stealthify V2:
+Here are some examples of Stealthify V2s Obfuscation Process:
 
 Before:
 ```python

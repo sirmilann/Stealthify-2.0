@@ -210,5 +210,5 @@ shutil.copy(currentfile,folder_path)
 except ValueError:
     print(f.RED + "Invalid input. Please enter a valid number of obfuscation layers.")
 except Exception as e:
-    print(f.RED + "An unexpected error occurred:", str(e))
+    print(f.RED + "An unexpected error occurred:",str(e))
 input()

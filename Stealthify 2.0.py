@@ -10,7 +10,7 @@ class Stealthfiy(ast.NodeTransformer):
 
     def obfuscate_name(self, name):
         if name not in self.mapping:
-            self.mapping[name] = "".join(random.choice(["I", "l"]) for _ in range(35))
+            self.mapping[name] = "".join(random.choice(["I", "l"]) for _ in range(30 , 40))
         return self.mapping[name]
 
     def visit_Import(self, node):
@@ -26,6 +26,10 @@ class Stealthfiy(ast.NodeTransformer):
             obfuscated_name = self.obfuscate_name(arg.arg)
             self.function_parameters[arg.arg] = obfuscated_name
             arg.arg = obfuscated_name
+
+        if node.body and isinstance(node.body[0], ast.Expr) and isinstance(node.body[0].value, ast.Str):
+            node.body = node.body[1:]  # Remove the docstring
+
         return self.generic_visit(node)
 
     visit_AsyncFunctionDef = visit_FunctionDef
@@ -107,7 +111,7 @@ def Stealthcrypt(content):
     return code
 
 try:
-    print(f.RED+"""
+    print(f.RED + """
 ███████╗████████╗███████╗ █████╗ ██╗  ████████╗██╗  ██╗██╗███████╗██╗   ██╗    ██╗   ██╗██████╗ 
 ██╔════╝╚══██╔══╝██╔════╝██╔══██╗██║  ╚══██╔══╝██║  ██║██║██╔════╝╚██╗ ██╔╝    ██║   ██║╚════██╗
 ███████╗   ██║   █████╗  ███████║██║     ██║   ███████║██║█████╗   ╚████╔╝     ██║   ██║ █████╔╝
@@ -116,7 +120,6 @@ try:
 ╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝╚═╝╚═╝        ╚═╝         ╚═══╝  ╚══════╝
 - By Sirmilann [SR] - https://discord.gg/Eww5ucwY4a
 """)
-    
     file_path = input(f.RED + "File: ")
     iterations = int(input(f.RED + "Number of Obfuscation Layers: "))
     antivm = input(f.RED + "Enable Anti VM? [yes/no]: ")  
@@ -210,5 +213,5 @@ shutil.copy(currentfile,folder_path)
 except ValueError:
     print(f.RED + "Invalid input. Please enter a valid number of obfuscation layers.")
 except Exception as e:
-    print(f.RED + "An unexpected error occurred:",str(e))
+    print(f.RED + "An unexpected error occurred:", str(e))
 input()
